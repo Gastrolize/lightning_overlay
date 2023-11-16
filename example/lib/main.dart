@@ -71,19 +71,19 @@ class LightningCardState extends State<LightningCard> {
           Center(
             child: Lightning(
               useGesture: true,
-              maxValue: 400,
+              maxValue: 600,
               borderRadius: 15,
 
               delayDuration: const Duration(milliseconds: 300),
               controller: controller,
-              direction: LightningDirection.rightToLeft,
+              direction: LightningDirection.leftToRight,
               pauseDuration: const Duration(milliseconds: 400),
               durationIn: const Duration(milliseconds: 300),
               durationOut: const Duration(milliseconds: 450),
               overlayColor: Colors.white.withOpacity(0.1),
               child: Container(
-                height: 200,
-                  width: 400,
+                height: 300,
+                  width: 300,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color:  Colors.blue,

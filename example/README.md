@@ -25,21 +25,21 @@ Also it supports following directions:
 
 ### API
 
-| Property        | Description           | Required  |  Optional |
-| ------------- |:-------------| :-----:| :---:|
-| maxValue      | It depends on the size your child widget. Choose the bigger number. If width=200 and height=300 choose 300.    | `Yes` | No |
-| child         | Passing your child widget      |   `Yes` | No |
-| delayDuration | When passing delayDuration, the animation will autostart and wait until delayed duration is finished           | No | `Yes` |
-| useGesture    | Deciding wether the user can press on it to start the animation and when tap up it finishes the animation      | No | No |
-| borderRadius  | If your child widget uses border radius, pass it the double to the Lightning to hide edges on animation        | No | No |
-| controller    | To trigger the animation (ex. when clicking on a button)                                                       | No | `Yes` |
-| overlayColor  | Styling the overlay color                                                                                      | No | No |
-| pauseDuration | When clicking or firing the animation, there can be set a pause Duration between when the overlay fully covered the child and starts to uncover the child  | No | No |
-| durationIn    | Duration for the covering animation   | No | No |
-| durationOut   | Duration for the uncovering animation   | No | No |
-| curveIn       | Curve for the covering animation   | No | No |
-| curveOut      | Curve for the uncovering animation   | No | No |
-| direction     | Wether the animation goes from left top to right bottom or reverse   | No | No |
+| Property        | Description                                                                                                                                                                                                   | Required  |  Optional |
+| ------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :-----:| :---:|
+| maxValue      | It depends on the size of your child widget. Choose the bigger number. If width=200 and height=300 choose 300.                                                                                                | `Yes` | No |
+| child         | Passing your child widget                                                                                                                                                                                     |   `Yes` | No |
+| delayDuration | When passing delayDuration, the animation will autostart after delayed duration                                                                                                                               | No | `Yes` |
+| useGesture    | Deciding wether the user can press on it to start the animation and when press ends it finishes the animation                                                                                                 | No | No |
+| borderRadius  | If your child widget uses border radius, pass the radius to the Lightning Widget to hide edges on animation                                                                                                   | No | No |
+| controller    | To trigger the animation (ex. when clicking on a button)                                                                                                                                                      | No | `Yes` |
+| overlayColor  | Styling the overlay color                                                                                                                                                                                     | No | No |
+| pauseDuration | When clicking or firing the animation, there can be set a pause Duration between when the overlay fully covered the child and starts to uncover the child.                                                    | No | No |
+| durationIn    | Duration for the covering animation                                                                                                                                                                           | No | No |
+| durationOut   | Duration for the uncovering animation                                                                                                                                                                         | No | No |
+| curveIn       | Curve for the covering animation                                                                                                                                                                              | No | No |
+| curveOut      | Curve for the uncovering animation                                                                                                                                                                            | No | No |
+| direction     | Wether the animation goes from left top to right bottom or reverse                                                                                                                                            | No | No |
 
 ### Controller
 
@@ -48,6 +48,9 @@ Create a Controller and pass it to the Lightning Widget:
 LightningController controller = LightningController();
 ```
 
-| Function      | Description           |
-| ------------- |:-------------|
-| animate      | Triggers the overlay animation    |
+Notice: You need to wait between the animateIn and animateOut, because the animateIn need's to finish the covering animation until animateOut can be called.
+
+| Function   | Description                       |
+|------------|:----------------------------------|
+| animateIn  | Triggers the covering animation   |
+| animateOut | Triggers the uncovering animation |
