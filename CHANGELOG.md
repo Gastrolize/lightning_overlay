@@ -1,3 +1,7 @@
+## 0.0.2
+
+* Added Issue Tracker
+
 ## 0.0.1
 
-* TODO: Describe initial release.
+* TODO: Init
