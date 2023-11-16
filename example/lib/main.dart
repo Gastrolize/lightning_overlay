@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lightning_overlay/lightning.dart';
+import 'package:lightning_overlay/lightning_overlay.dart';
 
 
 void main() {
