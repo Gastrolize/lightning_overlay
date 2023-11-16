@@ -53,6 +53,13 @@ class LightningCardState extends State<LightningCard> {
 
   LightningController controller = LightningController();
 
+
+  void animate() async {
+    controller.animateIn();
+    await Future.delayed(const Duration(milliseconds: 500));
+    controller.animateOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +73,11 @@ class LightningCardState extends State<LightningCard> {
               useGesture: true,
               maxValue: 400,
               borderRadius: 15,
+
+              delayDuration: const Duration(milliseconds: 300),
               controller: controller,
               direction: LightningDirection.rightToLeft,
-              pauseDuration: const Duration(milliseconds: 200),
+              pauseDuration: const Duration(milliseconds: 400),
               durationIn: const Duration(milliseconds: 300),
               durationOut: const Duration(milliseconds: 450),
               overlayColor: Colors.white.withOpacity(0.1),
@@ -86,7 +95,7 @@ class LightningCardState extends State<LightningCard> {
           const SizedBox(height: 100,),
 
           GestureDetector(
-            onTap: () => controller.animate(),
+            onTap: () => animate(),
             child: Container(
               height: 70,
               width: 200,

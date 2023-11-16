@@ -23,7 +23,6 @@ Also it supports following directions:
 1. Left Up Corner to Right Bottom Corner
 2. Right Bottom Corner to Left Up Corner
 
-
 ### API
 
 | Property        | Description           | Required  |  Optional |

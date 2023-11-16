@@ -6,11 +6,22 @@ import 'package:flutter/material.dart';
 class LightningController {
   late final AnimationController _animationController;
   late final AnimationController _animationControllerReverse;
+  
+  bool  _init = false;
+  
   LightningController();
 
-  void animate() {
+  void animateIn() {
+    if(!_init) return;
     if(_animationController.isAnimating || _animationController.status == AnimationStatus.completed || _animationControllerReverse.isAnimating) return;
     _animationController.forward();
+  }
+
+  void animateOut(){
+    if(!_init) return;
+    if(_animationControllerReverse.isAnimating || _animationControllerReverse.status == AnimationStatus.completed) return;
+    if(_animationController.status != AnimationStatus.completed) return;
+    _animationControllerReverse.forward();
   }
 }
 
@@ -132,7 +143,7 @@ class _LightningState extends State<Lightning>
     _lightningController = widget.controller ?? LightningController();
     _lightningController._animationController = animationController;
     _lightningController._animationControllerReverse = animationControllerReverse;
-
+    _lightningController._init = true;
     animation = Tween<double>(begin: 0, end: widget.maxValue*2).animate(
         CurvedAnimation(parent: animationController, curve: widget.curveIn));
 
@@ -142,11 +153,12 @@ class _LightningState extends State<Lightning>
 
 
     super.initState();
-    if (!widget.useGesture) {
-      if (widget.delayDuration != null) {
-        Future.delayed(widget.delayDuration!)
-            .then((value) => _lightningController.animate());
-      }
+    if (widget.delayDuration != null) {
+      Future.delayed(widget.delayDuration!).then((value)
+      {
+        _lightningController.animateIn();
+        Future.delayed(widget.pauseDuration).then((value) => _lightningController.animateOut());
+      });
     }
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -182,7 +194,7 @@ class _LightningState extends State<Lightning>
     setState(() {
       triggeredAnimation = true;
     });
-    _lightningController.animate();
+    _lightningController.animateIn();
   }
 
 

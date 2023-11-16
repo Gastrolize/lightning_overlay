@@ -10,6 +10,11 @@ Create nice Overlay Effect on any of your Widgets.
 https://github.com/Gastrolize/lightning_overlay/assets/72274345/14377764-7d17-4f6d-a30e-bc1c0a42013a
 
 
+### Note
+
+If you want to use the Auto Start, you need to set `delayDuration`. Also you need to set a `pauseDuration` for the reverse animation. If the reverse animation not starts, you need to increase the `pauseDuration`.
+
+
 ### Modes
 
 It supports following modes:
