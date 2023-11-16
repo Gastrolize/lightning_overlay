@@ -1,7 +1,6 @@
 name: lightning
 description: Create nice Overlay Effect on any of your Widgets
 version: 0.0.1
-author: Sobhi Hammoud
 homepage: https://github.com/Gastrolize/lightning_overlay
 
 environment:

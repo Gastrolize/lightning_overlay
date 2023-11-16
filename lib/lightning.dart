@@ -1,6 +1,6 @@
 library lightning;
 
-import 'package:flutter/animation.dart';
+
 import 'package:flutter/material.dart';
 
 class LightningController {
@@ -196,14 +196,12 @@ class _LightningState extends State<Lightning>
 
 
 
+  /// For covering
   void _onTap(){
     if(animationController.isAnimating || animationController.status == AnimationStatus.completed || animationControllerReverse.isAnimating) return;
-
-
     animationController.forward();
   }
-
-  void _onTapDown(TapDownDetails){
+  void _onTapDown(TapDownDetails _){
     if(animationController.isAnimating || animationController.status == AnimationStatus.completed || animationControllerReverse.isAnimating) return;
 
 
@@ -211,7 +209,7 @@ class _LightningState extends State<Lightning>
   }
 
 
-
+  /// For covering out
   void _onTapUp(TapUpDetails _){
     if(animationControllerReverse.isAnimating || animationControllerReverse.status == AnimationStatus.completed) return;
     waitForPause().then((value) {
@@ -219,9 +217,6 @@ class _LightningState extends State<Lightning>
       animationControllerReverse.forward();
     });
   }
-
-
-
   void _onTapCancel(){
     if(animationControllerReverse.isAnimating || animationControllerReverse.status == AnimationStatus.completed) return;
     if(animationController.status != AnimationStatus.completed) return;
@@ -231,7 +226,6 @@ class _LightningState extends State<Lightning>
 
   @override
   Widget build(BuildContext context) {
-
     if (!widget.useGesture) {
       return  Stack(
         children: [
@@ -288,8 +282,6 @@ class _Light extends CustomClipper<Path> {
   final double progress;
   final double reverseProgress;
   final LightningDirection lightningDirection;
-
-
   _Light({required this.progress,required this.reverseProgress,required this.lightningDirection});
 
   @override
@@ -299,25 +291,22 @@ class _Light extends CustomClipper<Path> {
 
     if(lightningDirection == LightningDirection.LeftToRight){
       path.moveTo(0, 0);
-      path.lineTo(reverseProgress, 0); /// Fix Punkt Oben Links -> X Axis
-      path.lineTo(0, reverseProgress); /// Fix Punkt Oben Links -> Y Axis
 
-      path.lineTo(0, progress); /// Fix Animiert  -> Y Axis
-      path.lineTo(progress, 0); /// Fix Animiert  -> X Axis
+      path.lineTo(reverseProgress, 0); ///  X Axis
+      path.lineTo(0, reverseProgress); ///  Y Axis
+
+      path.lineTo(0, progress); ///  Y Axis
+      path.lineTo(progress, 0); ///  X Axis
     } else {
       path.moveTo(size.width, size.height);
 
-      path.lineTo(size.width, size.height - progress); /// Fix Animiert  -> Y Axis
-      path.lineTo(size.width - progress, size.height); /// Fix Animiert  -> X Axis
+      path.lineTo(size.width, size.height - progress); ///  Y Axis
+      path.lineTo(size.width - progress, size.height); ///  X Axis
 
-      path.lineTo(size.width - reverseProgress, size.height); /// Fix Punkt Oben Links -> X Axis
-      path.lineTo(size.width, size.height - reverseProgress); /// Fix Punkt Oben Links -> Y Axis
+      path.lineTo(size.width - reverseProgress, size.height); ///  X Axis
+      path.lineTo(size.width, size.height - reverseProgress); ///  Y Axis
 
     }
-
-
-
-
     path.close();
     return path;
   }
