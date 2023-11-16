@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lightning/lightning.dart';
+import 'package:lightning_overlay/lightning.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -32,17 +33,19 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LightningCard(),
+      home: const LightningCard(),
     );
   }
 }
 
 class LightningCard extends StatefulWidget {
+  const LightningCard({super.key});
+
   @override
-  _LightningCardState createState() => _LightningCardState();
+  LightningCardState createState() => LightningCardState();
 }
 
-class _LightningCardState extends State<LightningCard> {
+class LightningCardState extends State<LightningCard> {
   @override
   void initState() {
     super.initState();
@@ -64,7 +67,7 @@ class _LightningCardState extends State<LightningCard> {
               maxValue: 400,
               borderRadius: 15,
               controller: controller,
-              direction: LightningDirection.RightToLeft,
+              direction: LightningDirection.rightToLeft,
               pauseDuration: const Duration(milliseconds: 200),
               durationIn: const Duration(milliseconds: 300),
               durationOut: const Duration(milliseconds: 450),
@@ -80,7 +83,7 @@ class _LightningCardState extends State<LightningCard> {
             ),
           ),
 
-          SizedBox(height: 100,),
+          const SizedBox(height: 100,),
 
           GestureDetector(
             onTap: () => controller.animate(),
@@ -91,7 +94,7 @@ class _LightningCardState extends State<LightningCard> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.blue
               ),
-              child: Center(
+              child: const Center(
                 child: Text("Animate",style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,

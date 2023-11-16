@@ -15,7 +15,7 @@ class LightningController {
 }
 
 
-enum LightningDirection { LeftToRight, RightToLeft}
+enum LightningDirection { leftToRight, rightToLeft}
 
 class Lightning extends StatefulWidget {
   /// The Duration for the Animation
@@ -73,7 +73,7 @@ class Lightning extends StatefulWidget {
         this.durationOut = const Duration(milliseconds: 600),
         this.curveIn = Curves.easeIn,
         this.curveOut = Curves.linear,
-        this.direction = LightningDirection.LeftToRight
+        this.direction = LightningDirection.leftToRight
 
       });
   @override
@@ -289,7 +289,7 @@ class _Light extends CustomClipper<Path> {
     final path = Path();
 
 
-    if(lightningDirection == LightningDirection.LeftToRight){
+    if(lightningDirection == LightningDirection.leftToRight){
       path.moveTo(0, 0);
 
       path.lineTo(reverseProgress, 0); ///  X Axis

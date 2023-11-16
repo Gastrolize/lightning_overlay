@@ -75,7 +75,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  lightning:
+  lightning_overlay:
     dependency: "direct main"
     description:
       path: ".."
