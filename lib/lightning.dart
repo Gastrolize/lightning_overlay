@@ -198,14 +198,14 @@ class _LightningState extends State<Lightning>
 
   void _onTap(){
     if(animationController.isAnimating || animationController.status == AnimationStatus.completed || animationControllerReverse.isAnimating) return;
-    print("[Tap]: Forwarding animation...");
+
 
     animationController.forward();
   }
 
   void _onTapDown(TapDownDetails){
     if(animationController.isAnimating || animationController.status == AnimationStatus.completed || animationControllerReverse.isAnimating) return;
-    print("[Tap Down]: Forwarding animation...");
+
 
     animationController.forward();
   }
@@ -215,7 +215,7 @@ class _LightningState extends State<Lightning>
   void _onTapUp(TapUpDetails _){
     if(animationControllerReverse.isAnimating || animationControllerReverse.status == AnimationStatus.completed) return;
     waitForPause().then((value) {
-      print("[Tap Up]: Reversing animation...");
+
       animationControllerReverse.forward();
     });
   }
@@ -225,7 +225,7 @@ class _LightningState extends State<Lightning>
   void _onTapCancel(){
     if(animationControllerReverse.isAnimating || animationControllerReverse.status == AnimationStatus.completed) return;
     if(animationController.status != AnimationStatus.completed) return;
-    print("[Cancel]: Reversing animation...");
+
     animationControllerReverse.forward();
   }
 
