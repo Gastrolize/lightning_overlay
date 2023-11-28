@@ -12,7 +12,8 @@ https://github.com/Gastrolize/lightning_overlay/assets/72274345/14377764-7d17-4f
 
 ### Note
 
-If you want to use the Auto Start, you need to set `delayDuration`. Also you need to set a `pauseDuration` for the reverse animation. If the reverse animation not starts, you need to increase the `pauseDuration`.
+* If you want to use the Auto Start, you need to set `delayDuration`. Also you need to set a `pauseDuration` for the reverse animation. If the reverse animation not starts, you need to increase the `pauseDuration`.
+* If you want to use Repeat Mode, set a higher Pause Delay `pauseRepeatDelay` (default 2 Seconds), because if the animation is finished, the `pauseRepeatDelay` will be triggered and the animation will be replay.
 
 
 ### Modes
@@ -22,6 +23,7 @@ It supports following modes:
 1. Auto Start with Delay
 2. Controlled by the Lightning Controller
 3. Gesture
+4. Repeat
 
 Also it supports following directions:
 

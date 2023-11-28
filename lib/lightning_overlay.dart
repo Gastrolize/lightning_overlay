@@ -1,32 +1,33 @@
 library lightning;
 
-
 import 'package:flutter/material.dart';
 
 class LightningController {
   late final AnimationController _animationController;
   late final AnimationController _animationControllerReverse;
-  
-  bool  _init = false;
-  
+
+  bool _init = false;
+
   LightningController();
 
   void animateIn() {
-    if(!_init) return;
-    if(_animationController.isAnimating || _animationController.status == AnimationStatus.completed || _animationControllerReverse.isAnimating) return;
+    if (!_init) return;
+    if (_animationController.isAnimating ||
+        _animationController.status == AnimationStatus.completed ||
+        _animationControllerReverse.isAnimating) return;
     _animationController.forward();
   }
 
-  void animateOut(){
-    if(!_init) return;
-    if(_animationControllerReverse.isAnimating || _animationControllerReverse.status == AnimationStatus.completed) return;
-    if(_animationController.status != AnimationStatus.completed) return;
+  void animateOut() {
+    if (!_init) return;
+    if (_animationControllerReverse.isAnimating ||
+        _animationControllerReverse.status == AnimationStatus.completed) return;
+    if (_animationController.status != AnimationStatus.completed) return;
     _animationControllerReverse.forward();
   }
 }
 
-
-enum LightningDirection { leftToRight, rightToLeft}
+enum LightningDirection { leftToRight, rightToLeft }
 
 class Lightning extends StatefulWidget {
   /// The Duration for the Animation
@@ -65,36 +66,37 @@ class Lightning extends StatefulWidget {
   /// Border radius for parent child
   final double borderRadius;
 
-
   /// Animation Direction
   final LightningDirection direction;
 
+  /// Repeat after paused Delay
+  final bool repeat;
+
+  /// Delay for repeatMode
+  final Duration pauseRepeatDelay;
 
   const Lightning(
       {super.key,
-        required this.maxValue,
-        required this.child,
-        this.delayDuration = const Duration(milliseconds: 500),
-        this.useGesture = false,
-        this.borderRadius=0,
-        this.controller,
-        this.overlayColor = const Color.fromRGBO(255, 255, 255, 0.1),
-        this.pauseDuration = const Duration(milliseconds: 200),
-        this.durationIn = const Duration(milliseconds: 300),
-        this.durationOut = const Duration(milliseconds: 600),
-        this.curveIn = Curves.easeIn,
-        this.curveOut = Curves.linear,
-        this.direction = LightningDirection.leftToRight
-
-      });
+      required this.maxValue,
+      required this.child,
+      this.delayDuration = const Duration(milliseconds: 500),
+      this.useGesture = false,
+      this.borderRadius = 0,
+      this.repeat = false,
+      this.controller,
+      this.pauseRepeatDelay = const Duration(seconds: 2),
+      this.overlayColor = const Color.fromRGBO(255, 255, 255, 0.1),
+      this.pauseDuration = const Duration(milliseconds: 200),
+      this.durationIn = const Duration(milliseconds: 300),
+      this.durationOut = const Duration(milliseconds: 600),
+      this.curveIn = Curves.easeIn,
+      this.curveOut = Curves.linear,
+      this.direction = LightningDirection.leftToRight});
   @override
   State<Lightning> createState() => _LightningState();
 }
 
-
-
-class _LightningState extends State<Lightning>
-    with TickerProviderStateMixin {
+class _LightningState extends State<Lightning> with TickerProviderStateMixin {
   late final AnimationController animationController;
   late final Animation<double> animation;
 
@@ -102,7 +104,6 @@ class _LightningState extends State<Lightning>
   late final Animation<double> animationReverse;
 
   late LightningController _lightningController;
-
 
   bool triggeredAnimation = false;
 
@@ -114,7 +115,7 @@ class _LightningState extends State<Lightning>
       super.didUpdateWidget(oldWidget);
     } else if (oldWidget.durationIn != widget.durationIn) {
       super.didUpdateWidget(oldWidget);
-    }  else if (oldWidget.durationOut != widget.durationOut) {
+    } else if (oldWidget.durationOut != widget.durationOut) {
       super.didUpdateWidget(oldWidget);
     } else if (oldWidget.curveIn != widget.curveIn) {
       super.didUpdateWidget(oldWidget);
@@ -139,30 +140,29 @@ class _LightningState extends State<Lightning>
       duration: widget.durationOut,
     );
 
-
     _lightningController = widget.controller ?? LightningController();
     _lightningController._animationController = animationController;
-    _lightningController._animationControllerReverse = animationControllerReverse;
+    _lightningController._animationControllerReverse =
+        animationControllerReverse;
     _lightningController._init = true;
-    animation = Tween<double>(begin: 0, end: widget.maxValue*2).animate(
+    animation = Tween<double>(begin: 0, end: widget.maxValue * 2).animate(
         CurvedAnimation(parent: animationController, curve: widget.curveIn));
 
-    animationReverse = Tween<double>(begin: 0, end: widget.maxValue*2).animate(
-        CurvedAnimation(parent: animationControllerReverse, curve: widget.curveOut));
-
-
+    animationReverse = Tween<double>(begin: 0, end: widget.maxValue * 2)
+        .animate(CurvedAnimation(
+            parent: animationControllerReverse, curve: widget.curveOut));
 
     super.initState();
     if (widget.delayDuration != null) {
-      Future.delayed(widget.delayDuration!).then((value)
-      {
+      Future.delayed(widget.delayDuration!).then((value) {
         _lightningController.animateIn();
-        Future.delayed(widget.pauseDuration).then((value) => _lightningController.animateOut());
+        Future.delayed(widget.pauseDuration)
+            .then((value) => _lightningController.animateOut());
       });
     }
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        if(!widget.useGesture){
+        if (!widget.useGesture) {
           Future.delayed(widget.pauseDuration).then((_) {
             animationControllerReverse.forward();
           });
@@ -170,12 +170,15 @@ class _LightningState extends State<Lightning>
       }
     });
 
-
     animationControllerReverse.addStatusListener((status) {
-      if(status == AnimationStatus.completed){
+      if (status == AnimationStatus.completed) {
         setState(() {
           animationController.reset();
           animationControllerReverse.reset();
+          if (widget.repeat) {
+            Future.delayed(widget.pauseRepeatDelay)
+                .then((value) => animationController.forward());
+          }
         });
       }
     });
@@ -188,50 +191,47 @@ class _LightningState extends State<Lightning>
     super.dispose();
   }
 
-
-  void animate(){
-    if(triggeredAnimation) return;
+  void animate() {
+    if (triggeredAnimation) return;
     setState(() {
       triggeredAnimation = true;
     });
     _lightningController.animateIn();
   }
 
-
-
-
-
   Future<void> waitForPause() async {
     await Future.delayed(widget.pauseDuration);
   }
 
-
-
-
   /// For covering
-  void _onTap(){
-    if(animationController.isAnimating || animationController.status == AnimationStatus.completed || animationControllerReverse.isAnimating) return;
-    animationController.forward();
-  }
-  void _onTapDown(TapDownDetails _){
-    if(animationController.isAnimating || animationController.status == AnimationStatus.completed || animationControllerReverse.isAnimating) return;
-
-
+  void _onTap() {
+    if (animationController.isAnimating ||
+        animationController.status == AnimationStatus.completed ||
+        animationControllerReverse.isAnimating) return;
     animationController.forward();
   }
 
+  void _onTapDown(TapDownDetails _) {
+    if (animationController.isAnimating ||
+        animationController.status == AnimationStatus.completed ||
+        animationControllerReverse.isAnimating) return;
+
+    animationController.forward();
+  }
 
   /// For covering out
-  void _onTapUp(TapUpDetails _){
-    if(animationControllerReverse.isAnimating || animationControllerReverse.status == AnimationStatus.completed) return;
+  void _onTapUp(TapUpDetails _) {
+    if (animationControllerReverse.isAnimating ||
+        animationControllerReverse.status == AnimationStatus.completed) return;
     waitForPause().then((value) {
-
       animationControllerReverse.forward();
     });
   }
-  void _onTapCancel(){
-    if(animationControllerReverse.isAnimating || animationControllerReverse.status == AnimationStatus.completed) return;
-    if(animationController.status != AnimationStatus.completed) return;
+
+  void _onTapCancel() {
+    if (animationControllerReverse.isAnimating ||
+        animationControllerReverse.status == AnimationStatus.completed) return;
+    if (animationController.status != AnimationStatus.completed) return;
 
     animationControllerReverse.forward();
   }
@@ -239,7 +239,7 @@ class _LightningState extends State<Lightning>
   @override
   Widget build(BuildContext context) {
     if (!widget.useGesture) {
-      return  Stack(
+      return Stack(
         children: [
           widget.child,
           Positioned.fill(
@@ -248,12 +248,16 @@ class _LightningState extends State<Lightning>
               builder: (context, child) {
                 return ClipPath(
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  clipper:
-                  _Light(progress: animation.value,reverseProgress: animationReverse.value,lightningDirection: widget.direction),  child: child,
+                  clipper: _Light(
+                      progress: animation.value,
+                      reverseProgress: animationReverse.value,
+                      lightningDirection: widget.direction),
+                  child: child,
                 );
               },
-              child: ClipRRect(borderRadius: BorderRadius.circular(widget.borderRadius),child: Container(color: widget.overlayColor)),
-
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(widget.borderRadius),
+                  child: Container(color: widget.overlayColor)),
             ),
           ),
         ],
@@ -272,16 +276,18 @@ class _LightningState extends State<Lightning>
             child: AnimatedBuilder(
               animation: Listenable.merge([animation, animationReverse]),
               builder: (context, child) {
-
                 return ClipPath(
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  clipper:
-                  _Light(progress: animation.value,reverseProgress: animationReverse.value,lightningDirection: widget.direction),
+                  clipper: _Light(
+                      progress: animation.value,
+                      reverseProgress: animationReverse.value,
+                      lightningDirection: widget.direction),
                   child: child,
                 );
               },
-              child: ClipRRect(borderRadius: BorderRadius.circular(widget.borderRadius),child: Container(color: widget.overlayColor)),
-
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(widget.borderRadius),
+                  child: Container(color: widget.overlayColor)),
             ),
           ),
         ],
@@ -294,30 +300,47 @@ class _Light extends CustomClipper<Path> {
   final double progress;
   final double reverseProgress;
   final LightningDirection lightningDirection;
-  _Light({required this.progress,required this.reverseProgress,required this.lightningDirection});
+  _Light(
+      {required this.progress,
+      required this.reverseProgress,
+      required this.lightningDirection});
 
   @override
   Path getClip(Size size) {
     final path = Path();
 
-
-    if(lightningDirection == LightningDirection.leftToRight){
+    if (lightningDirection == LightningDirection.leftToRight) {
       path.moveTo(0, 0);
 
-      path.lineTo(reverseProgress, 0); ///  X Axis
-      path.lineTo(0, reverseProgress); ///  Y Axis
+      path.lineTo(reverseProgress, 0);
 
-      path.lineTo(0, progress); ///  Y Axis
-      path.lineTo(progress, 0); ///  X Axis
+      ///  X Axis
+      path.lineTo(0, reverseProgress);
+
+      ///  Y Axis
+
+      path.lineTo(0, progress);
+
+      ///  Y Axis
+      path.lineTo(progress, 0);
+
+      ///  X Axis
     } else {
       path.moveTo(size.width, size.height);
 
-      path.lineTo(size.width, size.height - progress); ///  Y Axis
-      path.lineTo(size.width - progress, size.height); ///  X Axis
+      path.lineTo(size.width, size.height - progress);
 
-      path.lineTo(size.width - reverseProgress, size.height); ///  X Axis
-      path.lineTo(size.width, size.height - reverseProgress); ///  Y Axis
+      ///  Y Axis
+      path.lineTo(size.width - progress, size.height);
 
+      ///  X Axis
+
+      path.lineTo(size.width - reverseProgress, size.height);
+
+      ///  X Axis
+      path.lineTo(size.width, size.height - reverseProgress);
+
+      ///  Y Axis
     }
     path.close();
     return path;
