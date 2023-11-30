@@ -153,7 +153,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
             parent: animationControllerReverse, curve: widget.curveOut));
 
     super.initState();
-    if (widget.delayDuration != null) {
+    if (widget.delayDuration != null && mounted) {
       Future.delayed(widget.delayDuration!).then((value) {
         _lightningController.animateIn();
         Future.delayed(widget.pauseDuration)
@@ -162,7 +162,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
     }
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        if (!widget.useGesture) {
+        if (!widget.useGesture && mounted) {
           Future.delayed(widget.pauseDuration).then((_) {
             animationControllerReverse.forward();
           });
@@ -175,7 +175,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
         setState(() {
           animationController.reset();
           animationControllerReverse.reset();
-          if (widget.repeat) {
+          if (widget.repeat && mounted) {
             Future.delayed(widget.pauseRepeatDelay)
                 .then((value) => animationController.forward());
           }
@@ -196,7 +196,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
     setState(() {
       triggeredAnimation = true;
     });
-    _lightningController.animateIn();
+    if (mounted) _lightningController.animateIn();
   }
 
   Future<void> waitForPause() async {
@@ -208,7 +208,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
     if (animationController.isAnimating ||
         animationController.status == AnimationStatus.completed ||
         animationControllerReverse.isAnimating) return;
-    animationController.forward();
+    if (mounted) animationController.forward();
   }
 
   void _onTapDown(TapDownDetails _) {
@@ -216,7 +216,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
         animationController.status == AnimationStatus.completed ||
         animationControllerReverse.isAnimating) return;
 
-    animationController.forward();
+    if (mounted) animationController.forward();
   }
 
   /// For covering out
@@ -224,7 +224,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
     if (animationControllerReverse.isAnimating ||
         animationControllerReverse.status == AnimationStatus.completed) return;
     waitForPause().then((value) {
-      animationControllerReverse.forward();
+      if (mounted) animationControllerReverse.forward();
     });
   }
 
@@ -233,7 +233,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
         animationControllerReverse.status == AnimationStatus.completed) return;
     if (animationController.status != AnimationStatus.completed) return;
 
-    animationControllerReverse.forward();
+    if (mounted) animationControllerReverse.forward();
   }
 
   @override
