@@ -25,6 +25,10 @@ class LightningController {
     if (_animationController.status != AnimationStatus.completed) return;
     _animationControllerReverse.forward();
   }
+
+  void dispose() {
+    _init = false;
+  }
 }
 
 enum LightningDirection { leftToRight, rightToLeft }
@@ -155,16 +159,17 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
     super.initState();
     if (widget.delayDuration != null && mounted) {
       Future.delayed(widget.delayDuration!).then((value) {
-        _lightningController.animateIn();
-        Future.delayed(widget.pauseDuration)
-            .then((value) => _lightningController.animateOut());
+        if (mounted) _lightningController.animateIn();
+        Future.delayed(widget.pauseDuration).then((value) {
+          if (mounted) _lightningController.animateOut();
+        });
       });
     }
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         if (!widget.useGesture && mounted) {
           Future.delayed(widget.pauseDuration).then((_) {
-            animationControllerReverse.forward();
+            if (mounted) animationControllerReverse.forward();
           });
         }
       }
@@ -176,8 +181,9 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
           animationController.reset();
           animationControllerReverse.reset();
           if (widget.repeat && mounted) {
-            Future.delayed(widget.pauseRepeatDelay)
-                .then((value) => animationController.forward());
+            Future.delayed(widget.pauseRepeatDelay).then((value) {
+              if (mounted) animationController.forward();
+            });
           }
         });
       }
@@ -186,6 +192,8 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    widget.controller?.dispose();
+    _lightningController.dispose();
     animationController.dispose();
     animationControllerReverse.dispose();
     super.dispose();
