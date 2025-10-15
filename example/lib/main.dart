@@ -14,21 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -54,7 +39,7 @@ class LightningCardState extends State<LightningCard> {
 
   void animate() async {
     controller.animateIn();
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(seconds: 1));
     controller.animateOut();
   }
 
@@ -69,16 +54,15 @@ class LightningCardState extends State<LightningCard> {
           Center(
             child: Lightning(
               useGesture: false,
-              maxValue: 600,
               borderRadius: 15,
-              repeat: true,
+              repeatInfinity: true,
               delayDuration: const Duration(milliseconds: 300),
               controller: controller,
               direction: LightningDirection.leftToRight,
               pauseDuration: const Duration(milliseconds: 200),
               durationIn: const Duration(milliseconds: 300),
               durationOut: const Duration(milliseconds: 450),
-              overlayColor: Colors.white.withOpacity(0.1),
+              overlayColor: Colors.white.withValues(alpha: .6),
               child: Container(
                   height: 300,
                   width: 300,
