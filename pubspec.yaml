@@ -2,7 +2,7 @@ name: lightning_overlay
 description: >
   Add a beautiful, animated lightning overlay effect to any Flutter widget — 
   like Skeletonizer but without background or shimmer effects.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/Gastrolize/lightning_overlay
 repository: https://github.com/Gastrolize/lightning_overlay
 issue_tracker: https://github.com/Gastrolize/lightning_overlay/issues

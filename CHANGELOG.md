@@ -1,3 +1,7 @@
+## 1.0.1
+
+- Fixed issue when width is greather than height for child size
+
 ## 1.0.0
 
 - ✨ Major refactor and modernization of the entire package  
