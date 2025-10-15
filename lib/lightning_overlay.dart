@@ -340,7 +340,7 @@ class _LightningState extends State<Lightning> with TickerProviderStateMixin {
         _childKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox != null) {
       final size = renderBox.size;
-      _maxValue = size.height * 2;
+      _maxValue = (size.width > size.height ? size.width : size.height) * 2;
 
       // Update animations with new max value
       if (_maxValue > 0) {

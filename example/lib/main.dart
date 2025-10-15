@@ -65,7 +65,7 @@ class LightningCardState extends State<LightningCard> {
               overlayColor: Colors.white.withValues(alpha: .6),
               child: Container(
                   height: 300,
-                  width: 300,
+                  width: 500,
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.blue,
